@@ -1,0 +1,37 @@
+{
+  "name": "html5-wavetable",
+  "version": "0.0.1",
+  "description": "A html5 ready wavetable.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/TimDaub/html5-wavetable.git"
+  },
+  "keywords": [
+    "wavetable",
+    "music",
+    "synth",
+    "html5",
+    "graph",
+    "adsr",
+    "attack",
+    "release",
+    "decay",
+    "sustain"
+  ],
+  "author": "Tim Daubenschütz <tim@daubenschuetz.de>",
+  "bugs": {
+    "url": "https://github.com/TimDaub/html5-wavetable/issues"
+  },
+  "homepage": "https://github.com/TimDaub/html5-wavetable#readme",
+  "devDependencies": {
+    "serve": "^11.3.0"
+  },
+  "dependencies": {
+    "dygraphs": "^2.1.0"
+  }
+}

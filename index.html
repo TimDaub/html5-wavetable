@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>html5-wavetable</title>
+		<script type="module" src="./node_modules/dygraphs/dist/dygraph.min.js" />
+		<script type="module" src="fun.js"></script>
+		<script type="module" src="index.js"></script>
+		<script type="module">
+			import { logistic } from "./fun.js";
+			import { render } from "./index.js";
+
+			const elem = document.querySelector("#graph");
+			const k = -0.2;
+			const limit = 1000;
+			const data = [];
+			
+			for(let x = 0; x < limit; x++) {
+				let y = logistic(x, k);
+				data.push([x, y]);	
+			}
+
+			const styles = {
+        strokeWidth: 2,
+        axisLineWidth: 0,
+        axisLabelFormatter: () => "",
+        drawAxesAtZero: true,
+        axisLabelWidth: 0,
+        yLabelWidth: 0,
+        height: 500,
+        color: "red"
+			}
+
+			render(elem, data, styles);
+		</script>
+  </head>
+  <body>
+		<div id="graph"></div>
+		<div>
+			<input type="range" value="50" id="slider">
+		</div>
+  </body>
+</html>
