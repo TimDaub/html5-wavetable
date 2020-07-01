@@ -24,28 +24,31 @@
           
           const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
           
-          const line = new WebglLine(color, numX);
+          const line = new WebglLine(color, numX/2);
           
           const wglp = new WebGLplot(canv);
           
-          line.lineSpaceX(0, 2 / numX);
           wglp.addLine(line);
+          console.log(line);
           
           function newFrame() {
             update();
             wglp.update();
-            //wglp.gScaleY = scaleY;
             window.requestAnimationFrame(newFrame);
           }
           window.requestAnimationFrame(newFrame);
           
           function update() {
-              const freq = 0.002;
-          
-              for (let i = 0; i < line.numPoints; i+=2) {
-                const y = logistic(line.xy[i], k);
-                line.setY(i, y);
-              }
+            const fact = 1 / line.numPoints;
+            let x = 0;
+
+            for(let i = 0; i < line.numPoints; i++) {
+              x += fact; 
+              line.setX(i, x);
+              
+              const y = logistic(x, k);
+              line.setY(i, y);
+            }
           }
         }
       
@@ -59,7 +62,7 @@
   <body>
     <div>
       <canvas class="canvas" id="my_canvas"></canvas>
-      <input type="range" min="-100" max="100" value="0" class="slider" id="myRange">
+      <input type="range" min="-99" max="99" value="0" class="slider" id="myRange">
     </div>
   </body>
 </html>
