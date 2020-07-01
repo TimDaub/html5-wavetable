@@ -11,6 +11,9 @@
 			</style>
       <script type="module">
 				import WebGLplot, { WebglLine, ColorRGBA } from "./node_modules/webgl-plot/dist/webglplot.module.js";
+				import { logistic } from "./fun.js";
+        let k = 0;
+
         document.addEventListener("DOMContentLoaded", render);
         
         function render() {
@@ -25,7 +28,7 @@
           
           const wglp = new WebGLplot(canv);
           
-          line.lineSpaceX(-1, 2 / numX);
+          line.lineSpaceX(0, 2 / numX);
           wglp.addLine(line);
           
           function newFrame() {
@@ -37,22 +40,26 @@
           window.requestAnimationFrame(newFrame);
           
           function update() {
-              const freq = 0.001;
-              const amp = 0.5;
-              const noise = 0.5;
+              const freq = 0.002;
           
-              for (let i = 0; i < line.numPoints; i++) {
-                  const ySin = Math.sin(Math.PI * i * freq  * Math.PI * 2);
-                  const yNoise = Math.random() - 0.5;
-                  line.setY(i, ySin * amp + yNoise * noise);
+              for (let i = 0; i < line.numPoints; i+=2) {
+                const y = logistic(line.xy[i], k);
+                line.setY(i, y);
               }
           }
         }
+      
+        document.querySelector("input").addEventListener("input", evt => {
+          k = evt.target.value/100;
+          console.log(k);
+        });
+
       </script>
   </head>
   <body>
     <div>
       <canvas class="canvas" id="my_canvas"></canvas>
+      <input type="range" min="-100" max="100" value="0" class="slider" id="myRange">
     </div>
   </body>
 </html>
