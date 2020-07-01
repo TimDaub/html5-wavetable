@@ -1,47 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8"/>
-    <title>html5-wavetable</title>
-		<script type="module" src="./node_modules/dygraphs/dist/dygraph.min.js" />
-		<script type="module" src="fun.js"></script>
-		<script type="module" src="index.js"></script>
-		<script type="module" src="1way.js"></script>
-		<script type="module">
-			import { useState } from "./1way.js";
-			import { logistic } from "./fun.js";
-			import { render } from "./index.js";
-
-			const [k, setK] = useState(0.30, "k");
-
-			const elem = document.querySelector("#graph");
-			const limit = 1000;
-			const data = [];
-			
-			for(let x = 0; x < limit; x++) {
-				let y = logistic(x, k);
-				data.push([x, y]);	
-			}
-
-			const styles = {
-        strokeWidth: 2,
-        axisLineWidth: 0,
-        axisLabelFormatter: () => "",
-        drawAxesAtZero: true,
-        axisLabelWidth: 0,
-        yLabelWidth: 0,
-        height: 500,
-        color: "red"
-			}
-
-			render(elem, data, styles);
-		</script>
+      <meta charset="utf-8" />
+      <title>Example</title>
+			<style>
+				.canvas {
+          width: 100%;
+          height: 70vh;
+        }
+			</style>
+      <script type="module">
+				import WebGLplot, { WebglLine, ColorRGBA } from "./node_modules/webgl-plot/dist/webglplot.module.js";
+        document.addEventListener("DOMContentLoaded", render);
+        
+        function render() {
+          const canv = document.getElementById("my_canvas");
+          
+          const devicePixelRatio = window.devicePixelRatio || 1;
+          const numX = Math.round(canv.clientWidth * devicePixelRatio);
+          
+          const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
+          
+          const line = new WebglLine(color, numX);
+          
+          const wglp = new WebGLplot(canv);
+          
+          line.lineSpaceX(-1, 2 / numX);
+          wglp.addLine(line);
+          
+          function newFrame() {
+            update();
+            wglp.update();
+            //wglp.gScaleY = scaleY;
+            window.requestAnimationFrame(newFrame);
+          }
+          window.requestAnimationFrame(newFrame);
+          
+          function update() {
+              const freq = 0.001;
+              const amp = 0.5;
+              const noise = 0.5;
+          
+              for (let i = 0; i < line.numPoints; i++) {
+                  const ySin = Math.sin(Math.PI * i * freq  * Math.PI * 2);
+                  const yNoise = Math.random() - 0.5;
+                  line.setY(i, ySin * amp + yNoise * noise);
+              }
+          }
+        }
+      </script>
   </head>
   <body>
-		<div id="graph"></div>
-		<div>
-			<span bind:value="{bla}"></span>
-			<input bind:value="{k}" type="range">
-		</div>
+    <div>
+      <canvas class="canvas" id="my_canvas"></canvas>
+    </div>
   </body>
 </html>

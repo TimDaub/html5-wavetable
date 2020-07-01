@@ -32,6 +32,6 @@
     "serve": "^11.3.0"
   },
   "dependencies": {
-    "dygraphs": "^2.1.0"
+    "webgl-plot": "0.3.0"
   }
 }
