@@ -6,12 +6,15 @@
 		<script type="module" src="./node_modules/dygraphs/dist/dygraph.min.js" />
 		<script type="module" src="fun.js"></script>
 		<script type="module" src="index.js"></script>
+		<script type="module" src="1way.js"></script>
 		<script type="module">
+			import { useState } from "./1way.js";
 			import { logistic } from "./fun.js";
 			import { render } from "./index.js";
 
+			const [k, setK] = useState(0.30, "k");
+
 			const elem = document.querySelector("#graph");
-			const k = -0.2;
 			const limit = 1000;
 			const data = [];
 			
@@ -37,7 +40,8 @@
   <body>
 		<div id="graph"></div>
 		<div>
-			<input type="range" value="50" id="slider">
+			<span bind:value="{bla}"></span>
+			<input bind:value="{k}" type="range">
 		</div>
   </body>
 </html>
