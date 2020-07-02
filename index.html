@@ -34,27 +34,57 @@
           function newFrame() {
             update();
             wglp.update();
+            calc();
             window.requestAnimationFrame(newFrame);
           }
           window.requestAnimationFrame(newFrame);
           
+          function calc() {
+            if (!pos) return;
+            let relation = pos.x / rect.width;
+            //relation = 1/Math.pow(10, relation);
+            const scaling = (relation * 2) - 1;
+            if (!mouseDown) return;
+
+            k = scaling;
+          }
+
           function update() {
             const fact = 1 / line.numPoints;
             let x = 0;
 
             for(let i = 0; i < line.numPoints; i++) {
               x += fact; 
-              line.setX(i, x);
+              // NOTE: -1 to shift the graph to the left
+              line.setX(i, x-1);
               
               const y = logistic(x, k);
               line.setY(i, y);
             }
           }
         }
-      
-        document.querySelector("input").addEventListener("input", evt => {
-          k = evt.target.value/100;
-          console.log(k);
+
+        let mouseDown = false;
+        let pos;
+        let rect = document.querySelector("canvas").getBoundingClientRect();
+        function calcMouse(evt) {
+          pos = {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+          }
+        }
+        document.querySelector("canvas").addEventListener("mousedown", evt => {
+          calcMouse(evt);
+          mouseDown = true;
+        });
+        document.querySelector("canvas").addEventListener("mousemove", evt => {
+          calcMouse(evt);
+        });
+        document.querySelector("canvas").addEventListener("mouseup", evt => {
+          mouseDown = false;
+        });
+        document.querySelector("canvas").addEventListener("mouseout", evt => {
+          mouseDown = false;
         });
 
       </script>
@@ -62,7 +92,6 @@
   <body>
     <div>
       <canvas class="canvas" id="my_canvas"></canvas>
-      <input type="range" min="-99" max="99" value="0" class="slider" id="myRange">
     </div>
   </body>
 </html>
